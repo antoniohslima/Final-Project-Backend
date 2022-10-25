@@ -5,9 +5,19 @@ class ManagerController extends BaseController {
   constructor() {
     super();
 
+    this.index = this.index.bind(this);
     this.store = this.store.bind(this);
     this.update = this.update.bind(this);
     this.delete = this.delete.bind(this);
+  }
+
+  async index(req, res) {
+    try {
+      const managers = await ManagerService.index();
+      return this.handleSuccess(res, managers);
+    } catch (err) {
+      return this.handleError(res, err);
+    }
   }
 
   async store(req, res) {

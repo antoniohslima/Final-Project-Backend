@@ -1,9 +1,20 @@
 import Manager from '../models/Manager';
 
 class ManagerService {
+  async index() {
+    try {
+      return Manager.findAll({
+        attributes: ['id', 'name', 'email'],
+        raw: true,
+      });
+    } catch (err) {
+      return err;
+    }
+  }
+
   async store(data) {
     try {
-      return await Manager.create(data);
+      return Manager.create(data);
     } catch (err) {
       throw new Error(err);
     }
