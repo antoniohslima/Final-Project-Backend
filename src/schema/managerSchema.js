@@ -16,6 +16,13 @@ const schema = {
     }).noUnknown(),
   },
 
+  show: {
+    body: yup.object().shape({
+      email: yup.string().email().required(),
+      password: yup.string().max(50).required(),
+    }).noUnknown(),
+  },
+
 };
 
 export default schema;

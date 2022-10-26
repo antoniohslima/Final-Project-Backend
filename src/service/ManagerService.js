@@ -1,6 +1,25 @@
 import Manager from '../models/Manager';
 
 class ManagerService {
+  async show({ email, password }) {
+    try {
+      const manager = await Manager.findOne({
+        where: {
+          email,
+        },
+        attributes: ['name', 'email', 'password_hash'],
+      });
+
+      if (!(await manager.isPasswordValid(password))) {
+        throw new Error();
+      }
+
+      return manager;
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
   async index() {
     try {
       return Manager.findAll({
@@ -8,7 +27,7 @@ class ManagerService {
         raw: true,
       });
     } catch (err) {
-      return err;
+      throw new Error(err);
     }
   }
 

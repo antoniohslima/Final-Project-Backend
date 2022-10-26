@@ -1,7 +1,7 @@
 import Jwt from 'jsonwebtoken';
 import Manager from '../models/Manager';
 
-class ManagerService {
+class TokenService {
   async store(data) {
     try {
       const { email, password } = data;
@@ -29,4 +29,4 @@ class ManagerService {
   }
 }
 
-export default new ManagerService();
+export default new TokenService();
