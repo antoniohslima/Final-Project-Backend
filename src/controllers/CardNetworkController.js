@@ -5,9 +5,32 @@ class CardNetworkController extends BaseController {
   constructor() {
     super();
 
+    this.index = this.index.bind(this);
+    this.show = this.show.bind(this);
     this.store = this.store.bind(this);
     this.update = this.update.bind(this);
     this.delete = this.delete.bind(this);
+  }
+
+  async index(req, res) {
+    try {
+      const newNetwork = await CardNetworkService.index();
+      return this.handleSuccess(res, newNetwork);
+    } catch (err) {
+      return this.handleError(res, err);
+    }
+  }
+
+  async show(req, res) {
+    try {
+      const option = {
+        networkId: req.filter.networkId,
+      };
+      const network = await CardNetworkService.show(option);
+      return this.handleSuccess(res, network);
+    } catch (err) {
+      return this.handleError(res, err);
+    }
   }
 
   async store(req, res) {

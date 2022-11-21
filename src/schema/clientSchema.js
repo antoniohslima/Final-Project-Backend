@@ -14,7 +14,7 @@ const schema = {
   update: {
     body: yup.object().shape({
       name: yup.string().max(50),
-      email: yup.string().email().required(),
+      email: yup.string().email(),
       net_worth: yup.number(),
       age: yup.number().positive().integer().min(18),
     }).noUnknown(),
@@ -25,10 +25,14 @@ const schema = {
   },
 
   delete: {
-    body: yup.object().shape({
+    params: yup.object().shape({
       id: yup.number().required(),
-      email: yup.string().email().required(),
-      name: yup.string().max(50),
+    }).noUnknown(),
+  },
+
+  show: {
+    params: yup.object().shape({
+      id: yup.number().required(),
     }).noUnknown(),
   },
 

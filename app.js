@@ -29,7 +29,7 @@ class App {
 
   routes() {
     this.app.use('/managers/', managerRoutes.setup());
-    this.app.use('/tokens/', tokenRoutes.setup());
+    this.app.use('/login/', tokenRoutes.setup());
     this.app.use('/clients/', clientsRoutes.setup());
     this.app.use('/networks/', cardNetworkRoutes.setup());
     this.app.use('/cards/', cardRoutes.setup());

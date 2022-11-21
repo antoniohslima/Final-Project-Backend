@@ -8,8 +8,9 @@ class ManagerRoutes extends BaseRoute {
     this.router.post('/', this.SchemaValidator.Validate(managerSchema.store), ManagerController.store);
     this.router.put('/', LoginRequired, this.SchemaValidator.Validate(managerSchema.update), ManagerController.update);
     this.router.delete('/', LoginRequired, ManagerController.delete);
-    this.router.get('/list', ManagerController.index);
-    this.router.post('/login', this.SchemaValidator.Validate(managerSchema.show), ManagerController.show);
+    this.router.get('/', ManagerController.index);
+    this.router.get('/profile', LoginRequired, ManagerController.show);
+    // this.router.post('/login', this.SchemaValidator.Validate(managerSchema.login), ManagerController.login);
 
     return this.router;
   }

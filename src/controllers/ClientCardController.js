@@ -5,9 +5,43 @@ class ClientCardController extends BaseController {
   constructor() {
     super();
 
+    this.index = this.index.bind(this);
+    this.show = this.show.bind(this);
     this.store = this.store.bind(this);
     this.update = this.update.bind(this);
     this.delete = this.delete.bind(this);
+  }
+
+  async index(req, res) {
+    try {
+      const options = {
+        filter: {
+          ...req.filter,
+          manager_id: req.managerId,
+        },
+      };
+      const cards = await ClientCardService.index(options);
+
+      return this.handleSuccess(res, cards);
+    } catch (err) {
+      return this.handleError(res, err);
+    }
+  }
+
+  async show(req, res) {
+    try {
+      const options = {
+        filter: {
+          ...req.filter,
+          manager_id: req.managerId,
+        },
+      };
+      const card = await ClientCardService.show(options);
+
+      return this.handleSuccess(res, card);
+    } catch (err) {
+      return this.handleError(res, err);
+    }
   }
 
   async store(req, res) {
@@ -47,7 +81,6 @@ class ClientCardController extends BaseController {
   async delete(req, res) {
     try {
       const options = {
-        data: req.data,
         filter: {
           ...req.filter,
           manager_id: req.managerId,

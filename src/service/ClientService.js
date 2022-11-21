@@ -1,4 +1,5 @@
 import Client from '../models/Client';
+import getClientCredit from '../../Utils/getClientCredit';
 
 class ClientService {
   async findClient(id, manager_id) {
@@ -7,14 +8,32 @@ class ClientService {
         id,
         manager_id,
       },
-      attributes: ['net_worth'],
+      attributes: ['name', 'email', 'age', 'net_worth'],
     });
 
     if (!client) {
       throw new Error('Client does not exists');
     }
 
+    const { cardLevel } = getClientCredit(client);
+    client.dataValues.CardType = cardLevel;
+
     return client;
+  }
+
+  async index(managerId) {
+    try {
+      const clients = Client.findAll({
+        where: {
+          manager_id: managerId,
+        },
+        attributes: ['id', 'name', 'email', 'age', 'net_worth'],
+      });
+
+      return clients;
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 
   async store({ data }) {
@@ -22,7 +41,7 @@ class ClientService {
       const client = await Client.create(data);
       return client;
     } catch (err) {
-      return err.message;
+      throw new Error(err);
     }
   }
 
@@ -36,11 +55,11 @@ class ClientService {
         },
       });
     } catch (err) {
-      return err.message;
+      throw new Error(err);
     }
   }
 
-  async delete({ data, manager_id }) {
+  async delete({ filter, manager_id }) {
     try {
       // const client = await Client.findOne({
       //   where: { email: req.data.email },
@@ -54,16 +73,16 @@ class ClientService {
       //   throw new Error('Only the client`s manager can delete it');
       // }
 
-      await this.findClient(data.id, manager_id);
+      await this.findClient(filter.id, manager_id);
 
       await Client.destroy({
         where: {
-          id: data.id,
+          id: filter.id,
         },
       });
       return 'Client deleted successfully';
     } catch (err) {
-      return err.message;
+      throw new Error(err);
     }
   }
 }

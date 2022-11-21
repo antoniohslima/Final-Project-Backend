@@ -16,12 +16,18 @@ const schema = {
     }).noUnknown(),
   },
 
-  show: {
-    body: yup.object().shape({
-      email: yup.string().email().required(),
-      password: yup.string().max(50).required(),
-    }).noUnknown(),
-  },
+  // login: {
+  //   body: yup.object().shape({
+  //     email: yup.string().email().required(),
+  //     password: yup.string().max(50).required(),
+  //   }).noUnknown(),
+  // },
+
+  // show: {
+  //   params: yup.object().shape({
+  //     id: yup.number().required(),
+  //   }).noUnknown(),
+  // },
 
 };
 

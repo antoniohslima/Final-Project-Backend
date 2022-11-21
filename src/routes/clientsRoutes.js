@@ -7,7 +7,9 @@ class ClientRoutes extends BaseRoute {
   setup() {
     this.router.post('/', LoginRequired, this.SchemaValidator.Validate(clientSchema.store), ClientController.store);
     this.router.put('/:clientId', LoginRequired, this.SchemaValidator.Validate(clientSchema.update), ClientController.update);
-    this.router.delete('/', LoginRequired, this.SchemaValidator.Validate(clientSchema.delete), ClientController.delete);
+    this.router.delete('/:id', LoginRequired, this.SchemaValidator.Validate(clientSchema.delete), ClientController.delete);
+    this.router.get('/:id', LoginRequired, this.SchemaValidator.Validate(clientSchema.show), ClientController.show);
+    this.router.get('/', LoginRequired, ClientController.index);
 
     return this.router;
   }

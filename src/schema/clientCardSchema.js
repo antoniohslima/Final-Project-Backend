@@ -6,7 +6,6 @@ const schema = {
   store: {
     body: yup.object().shape({
       network: yup.string().required(),
-      cvv: yup.string().min(3).max(3).required(),
       printed_name: yup.string().min(3).max(24).required(),
       expiration_date: yup.date()
         .min(moment())
@@ -32,12 +31,22 @@ const schema = {
   },
   //
   delete: {
-    body: yup.object().shape({
+    params: yup.object().shape({
+      cardId: yup.number().integer().required(),
       clientId: yup.number().integer().required(),
     }).noUnknown(),
+  },
 
+  index: {
+    params: yup.object().shape({
+      clientId: yup.number().required(),
+    }).noUnknown(),
+  },
+
+  show: {
     params: yup.object().shape({
       cardId: yup.number().required(),
+      clientId: yup.number().required(),
     }).noUnknown(),
   },
 

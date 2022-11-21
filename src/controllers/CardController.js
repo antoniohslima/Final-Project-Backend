@@ -5,9 +5,19 @@ class CardController extends BaseController {
   constructor() {
     super();
 
+    this.show = this.show.bind(this);
     this.store = this.store.bind(this);
-    // this.update = this.update.bind(this);
     this.delete = this.delete.bind(this);
+    // this.update = this.update.bind(this);
+  }
+
+  async show(req, res) {
+    try {
+      const card = await CardService.show(req.filter);
+      return this.handleSuccess(res, card);
+    } catch (err) {
+      return this.handleError(res, err);
+    }
   }
 
   async store(req, res) {
@@ -19,12 +29,6 @@ class CardController extends BaseController {
     }
   }
 
-  // async update(req, res) {
-  //   const updatedCard = await CardService.update(req);
-
-  //   return res.json(updatedCard);
-  // }
-
   async delete(req, res) {
     try {
       const confirmation = await CardService.delete(req.data);
@@ -33,6 +37,12 @@ class CardController extends BaseController {
       return this.handleError(res, err);
     }
   }
+
+  // async update(req, res) {
+  //   const updatedCard = await CardService.update(req);
+
+  //   return res.json(updatedCard);
+  // }
 }
 
 export default new CardController();

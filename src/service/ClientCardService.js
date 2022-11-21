@@ -19,6 +19,10 @@ class ClientCardService {
         where: { name: data.network },
       });
 
+      if (!cardNetwork) {
+        throw new Error('Network does not exists');
+      }
+
       let card = await Card.findOne({
         where: {
           network_id: cardNetwork.id,
@@ -40,13 +44,15 @@ class ClientCardService {
       }
 
       const { starting_numbers } = cardNetwork;
-      const cardNumber = Math.random().toString(9).substring(2, 14);
+      const cardNumber = Math.random().toString().substring(2, 14);
+      const cvv = Math.random().toString().substring(2, 5);
 
       data.expiration_date = moment(data.expiration_date).format('YYYY-MM-DD');
       data.number = starting_numbers + cardNumber;
       data.limit = limit;
       data.card_id = card.id;
       data.client_id = filter.clientId;
+      data.cvv = cvv;
 
       const clientCard = await ClientCard.create(
         data,
@@ -78,9 +84,9 @@ class ClientCardService {
     }
   }
 
-  async delete({ data, filter }) {
+  async delete({ filter }) {
     try {
-      await ClientService.findClient(data.clientId, filter.manager_id);
+      await ClientService.findClient(filter.clientId, filter.manager_id);
 
       await ClientCard.destroy({
         where: {
@@ -88,6 +94,45 @@ class ClientCardService {
         },
       });
       return 'Card deleted successfully';
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
+  async index({ filter }) {
+    try {
+      await ClientService.findClient(filter.clientId, filter.manager_id);
+
+      const cards = await ClientCard.findAll({
+        where: {
+          client_id: filter.clientId,
+        },
+        attributes: ['id', 'card_id', 'printed_name', 'number', 'cvv', 'expiration_date', 'limit'],
+      });
+
+      const nCards = await ClientCard.count({
+        where: {
+          client_id: filter.clientId,
+        },
+      });
+
+      return { cards, nCards };
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
+  async show({ filter }) {
+    try {
+      await ClientService.findClient(filter.clientId, filter.manager_id);
+
+      const card = await ClientCard.findOne({
+        where: {
+          id: filter.cardId,
+        },
+        attributes: ['id', 'card_id', 'printed_name', 'number', 'cvv', 'expiration_date', 'limit'],
+      });
+      return card;
     } catch (err) {
       throw new Error(err);
     }
