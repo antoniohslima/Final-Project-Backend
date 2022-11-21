@@ -13,6 +13,8 @@ import clientsRoutes from './src/routes/clientsRoutes';
 import cardNetworkRoutes from './src/routes/cardNetworkRoutes';
 import cardRoutes from './src/routes/cardRoutes';
 import clientCardRoutes from './src/routes/clientCardsRoutes';
+import ManagerAccessLogsRoutes from './src/routes/ManagerAccessLogsRoutes';
+import RecoveryRoutes from './src/routes/recoveryRoutes';
 
 class App {
   constructor() {
@@ -34,6 +36,8 @@ class App {
     this.app.use('/networks/', cardNetworkRoutes.setup());
     this.app.use('/cards/', cardRoutes.setup());
     this.app.use('/clientsCards/', clientCardRoutes.setup());
+    this.app.use('/accessLogs/', ManagerAccessLogsRoutes.setup());
+    this.app.use('/', RecoveryRoutes.setup());
   }
 }
 

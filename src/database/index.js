@@ -5,8 +5,9 @@ import Client from '../models/Client';
 import CardNetwork from '../models/CardNetwork';
 import Card from '../models/Card';
 import ClientCard from '../models/ClientCard';
+import ManagerAccessLogs from '../models/ManagerAccessLogs';
 
-const models = [Manager, Client, CardNetwork, Card, ClientCard];
+const models = [Manager, Client, CardNetwork, Card, ClientCard, ManagerAccessLogs];
 
 const connection = new Sequelize(databaseConfig);
 

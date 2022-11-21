@@ -13,6 +13,7 @@ class TokenController extends BaseController {
       const token = await TokenService.store(req.data);
       return this.handleSuccess(res, token);
     } catch (err) {
+      console.log(err);
       return this.handleError(res, err);
     }
   }

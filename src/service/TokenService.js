@@ -1,5 +1,7 @@
 import Jwt from 'jsonwebtoken';
 import Manager from '../models/Manager';
+import ManagerAccessLogs from '../models/ManagerAccessLogs';
+import ManagerAccessLogsService from './ManagerAccessLogsService';
 
 class TokenService {
   async store(data) {
@@ -12,11 +14,38 @@ class TokenService {
         throw new Error('Manager does not exists');
       }
 
+      const { id } = manager;
+
       if (!(await manager.isPasswordValid(password))) {
-        throw new Error('Invalid password!');
+        console.log(123456789);
+        const allowBlockUser = await ManagerAccessLogsService.checkAccessVerification({
+          manager_id: id,
+        });
+
+        if (!allowBlockUser) {
+          await ManagerAccessLogs.create({
+            manager_id: id,
+            status: 'FAIL',
+          });
+
+          throw new Error('Invalid password.');
+        }
+
+        await Manager.update({
+          is_blocked: true,
+        }, {
+          where: {
+            id,
+          },
+        });
+
+        throw new Error('User has been blocked');
       }
 
-      const { id } = manager;
+      await ManagerAccessLogs.create({
+        manager_id: id,
+        status: 'SUCCESS',
+      });
 
       const token = Jwt.sign({ id, email }, process.env.TOKEN_SECRET, {
         expiresIn: process.env.TOKEN_EXPIRATION,
