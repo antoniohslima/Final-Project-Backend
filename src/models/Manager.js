@@ -9,6 +9,9 @@ export default class Manager extends Model {
         email: DataTypes.STRING,
         password: DataTypes.VIRTUAL,
         password_hash: DataTypes.STRING,
+        password_reset_token: DataTypes.STRING,
+        password_reset_expires: DataTypes.DATE,
+        is_blocked: DataTypes.BOOLEAN,
 
       },
       {

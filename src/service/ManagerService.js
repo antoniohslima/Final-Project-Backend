@@ -1,9 +1,53 @@
 import Manager from '../models/Manager';
 
 class ManagerService {
+  // async login({ email, password }) {
+  //   try {
+  //     const manager = await Manager.findOne({
+  //       where: {
+  //         email,
+  //       },
+  //       attributes: ['name', 'email', 'password_hash'],
+  //     });
+
+  //     const canLog = await manager.isPasswordValid(password);
+
+  //     if (!canLog) {
+  //       throw new Error('Validation Error');
+  //     }
+
+  //     return canLog;
+  //   } catch (err) {
+  //     throw new Error(err);
+  //   }
+  // }
+
+  show({ id }) {
+    try {
+      return Manager.findOne({
+        where: {
+          id,
+        },
+      });
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
+  async index() {
+    try {
+      return Manager.findAll({
+        attributes: ['id', 'name', 'email'],
+        raw: true,
+      });
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
   async store(data) {
     try {
-      return await Manager.create(data);
+      return Manager.create(data);
     } catch (err) {
       throw new Error(err);
     }

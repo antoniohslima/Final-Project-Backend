@@ -1,6 +1,12 @@
 import * as yup from 'yup';
 
 const schema = {
+  show: {
+    params: yup.object().shape({
+      cardId: yup.number().required().integer(),
+    }).noUnknown(),
+  },
+
   store: {
     body: yup.object().shape({
       network_id: yup.number().required().integer(),

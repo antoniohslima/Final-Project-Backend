@@ -1,6 +1,22 @@
 import Card from '../models/Card';
 
 class CardService {
+  async show(filter) {
+    try {
+      const card = await Card.findOne(
+        {
+          where: {
+            id: filter.cardId,
+          },
+          attributes: ['type', 'network_id'],
+        },
+      );
+      return card;
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
   async store(data) {
     try {
       const card = await Card.create(data);

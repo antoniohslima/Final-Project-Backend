@@ -3,7 +3,7 @@ export default function getClientCredit(client) {
   let limit;
 
   if (client.net_worth >= 10000000) {
-    cardLevel = 'Especial';
+    cardLevel = 'Full';
     limit = null;
   } else if (client.net_worth > 1000000) {
     cardLevel = 'Black';

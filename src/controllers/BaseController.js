@@ -4,6 +4,6 @@ export default class BaseController {
   }
 
   handleError(res, error) {
-    return res.status(401).json({ error: error.massage });
+    return res.status(401).json({ error: error.message });
   }
 }
