@@ -1,4 +1,4 @@
-import MailService from './MailService.js';
+import MailService from './MailService';
 
 const sendEmail = (options, to) => new Promise((resolve, reject) => MailService.sendMail({
   ...options,

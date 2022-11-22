@@ -43,7 +43,7 @@ class RecoveryService {
   }
 
   async validateToken(token) {
-    const hasToken = await Manager.findOne({
+    const manager = await Manager.findOne({
       where: {
         password_reset_token: token,
         password_reset_expires: {
@@ -54,15 +54,16 @@ class RecoveryService {
       raw: true,
     });
 
-    if (!hasToken) {
+    if (!manager) {
       throw new Error('There is no token.');
     }
 
-    return hasToken;
+    return manager;
   }
 
   async changePassword(data, token, ip) {
     const manager = await this.validateToken(token);
+    console.log(manager);
 
     const changes = {
       password_reset_token: null,

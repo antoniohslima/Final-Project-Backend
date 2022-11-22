@@ -16,7 +16,7 @@ const schema = {
   change: {
     body: yup.object({
       password: yup.string().required('Please enter your password.').min(3, 'The password field must contain at least 3 characters!'),
-      confirm_password: yup.string().required('Please retype your password.').oneOf([yup.ref('password')], 'Your passwords do not match.'),
+      password_confirmation: yup.string().required('Please retype your password.').oneOf([yup.ref('password')], 'Your passwords do not match.'),
     }).noUnknown(),
 
     params: yup.object({

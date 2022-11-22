@@ -1,7 +1,9 @@
+import moment from 'moment';
 import Jwt from 'jsonwebtoken';
 import Manager from '../models/Manager';
 import ManagerAccessLogs from '../models/ManagerAccessLogs';
 import ManagerAccessLogsService from './ManagerAccessLogsService';
+import SendMailService from './SendMailService';
 
 class TokenService {
   async store(data) {
@@ -17,7 +19,6 @@ class TokenService {
       const { id } = manager;
 
       if (!(await manager.isPasswordValid(password))) {
-        console.log(123456789);
         const allowBlockUser = await ManagerAccessLogsService.checkAccessVerification({
           manager_id: id,
         });
@@ -39,7 +40,18 @@ class TokenService {
           },
         });
 
-        throw new Error('User has been blocked');
+        const options = {
+          context: {
+            manager,
+            date: moment().format('DD/MM/YYYY [às] HH:mm'),
+          },
+          subject: 'Usuário Bloqueado',
+          template: 'is-blocked',
+        };
+
+        await SendMailService.sendEmail(options, manager.email);
+
+        throw new Error('Usuário bloqueado entre em contato com o suporte.');
       }
 
       await ManagerAccessLogs.create({
