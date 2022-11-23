@@ -40,6 +40,8 @@ class TokenService {
           },
         });
 
+        console.log(manager);
+
         const options = {
           context: {
             manager,

@@ -63,7 +63,6 @@ class RecoveryService {
 
   async changePassword(data, token, ip) {
     const manager = await this.validateToken(token);
-    console.log(manager);
 
     const changes = {
       password_reset_token: null,
