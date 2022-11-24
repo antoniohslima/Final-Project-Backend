@@ -15,6 +15,7 @@ import cardRoutes from './src/routes/cardRoutes';
 import clientCardRoutes from './src/routes/clientCardsRoutes';
 import ManagerAccessLogsRoutes from './src/routes/ManagerAccessLogsRoutes';
 import RecoveryRoutes from './src/routes/recoveryRoutes';
+import pdfRoutes from './src/routes/pdfRoutes';
 
 class App {
   constructor() {
@@ -27,6 +28,7 @@ class App {
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(express.json());
     this.app.use(cors());
+    this.app.use(express.static(`${__dirname}/uploads`));
   }
 
   routes() {
@@ -38,6 +40,7 @@ class App {
     this.app.use('/clientsCards/', clientCardRoutes.setup());
     this.app.use('/accessLogs/', ManagerAccessLogsRoutes.setup());
     this.app.use('/', RecoveryRoutes.setup());
+    this.app.use('/pdf', pdfRoutes.setup());
   }
 }
 
