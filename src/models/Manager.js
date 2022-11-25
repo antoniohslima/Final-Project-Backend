@@ -34,6 +34,6 @@ export default class Manager extends Model {
   }
 
   static associate(models) {
-    this.hasMany(models.Client, { foreignKey: 'manager_id' });
+    this.hasMany(models.Client, { foreignKey: 'manager_id', as: 'client' });
   }
 }
