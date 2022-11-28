@@ -17,6 +17,7 @@ import ManagerAccessLogsRoutes from './src/routes/ManagerAccessLogsRoutes';
 import RecoveryRoutes from './src/routes/recoveryRoutes';
 import pdfRoutes from './src/routes/pdfRoutes';
 import XlsRoutes from './src/routes/xlsRoutes';
+import countRoutes from './src/routes/countRoute';
 
 class App {
   constructor() {
@@ -43,6 +44,7 @@ class App {
     this.app.use('/', RecoveryRoutes.setup());
     this.app.use('/pdf', pdfRoutes.setup());
     this.app.use('/xls', XlsRoutes.setup());
+    this.app.use('/count', countRoutes.setup());
   }
 }
 

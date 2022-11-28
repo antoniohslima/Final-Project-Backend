@@ -36,6 +36,12 @@ const schema = {
     }).noUnknown(),
   },
 
+  index: {
+    query: yup.object().shape({
+      page: yup.number().required(),
+    }).noUnknown(),
+  },
+
 };
 
 export default schema;

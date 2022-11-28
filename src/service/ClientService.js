@@ -21,13 +21,33 @@ class ClientService {
     return client;
   }
 
-  async index(managerId) {
+  async count(managerId) {
     try {
+      const nClients = Client.count({
+        where: {
+          manager_id: managerId,
+        },
+      });
+
+      return nClients;
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
+  async index(managerId, meta) {
+    try {
+      const limit = 7;
+      const offset = meta.page * limit;
+
       const clients = Client.findAll({
         where: {
           manager_id: managerId,
         },
         attributes: ['id', 'name', 'email', 'age', 'net_worth'],
+        order: [['name', 'ASC']],
+        offset,
+        limit,
       });
 
       return clients;

@@ -5,6 +5,7 @@ class ClientController extends BaseController {
   constructor() {
     super();
 
+    this.count = this.count.bind(this);
     this.index = this.index.bind(this);
     this.show = this.show.bind(this);
     this.store = this.store.bind(this);
@@ -12,9 +13,19 @@ class ClientController extends BaseController {
     this.delete = this.delete.bind(this);
   }
 
+  async count(req, res) {
+    try {
+      const nClients = await ClientService.count(req.managerId);
+
+      this.handleSuccess(res, nClients);
+    } catch (err) {
+      this.handleError(res, err);
+    }
+  }
+
   async index(req, res) {
     try {
-      const clients = await ClientService.index(req.managerId);
+      const clients = await ClientService.index(req.managerId, req.query);
 
       this.handleSuccess(res, clients);
     } catch (err) {
