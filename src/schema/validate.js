@@ -8,13 +8,13 @@ class SchemaValidator {
         req.filter = Object.keys(req.params).length
           ? await schema.params.validate(req.params) : null;
 
-        req.filter = Object.keys(req.query).length ? {
-          ...req.filter, ...(await schema.params.validate(req.query)),
-        } : req.filter || null;
+        req.filter = req.query && Object.keys(req?.query).length ? {
+          ...req.filter, ...(await schema.query.validate(req.query)),
+        } : req.filter;
 
         return next();
       } catch (err) {
-        return res.status(401).json({ error: err.message });
+        return res.status(500).json({ error: err.message });
       }
     };
   }

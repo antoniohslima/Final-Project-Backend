@@ -38,20 +38,40 @@ class ClientService {
   async index(managerId, meta) {
     try {
       const limit = 7;
-      const offset = meta.page * limit;
+      const offset = (meta.page - 1) * limit;
 
-      const clients = Client.findAll({
-        where: {
-          manager_id: managerId,
-        },
-        attributes: ['id', 'name', 'email', 'age', 'net_worth'],
-        order: [['name', 'ASC']],
-        offset,
-        limit,
-      });
+      const promises = [];
 
-      return clients;
+      promises.push(
+        Client.findAll({
+          where: {
+            manager_id: managerId,
+          },
+          attributes: ['id', 'name', 'email', 'age', 'net_worth'],
+          order: [['name', 'ASC']],
+          offset,
+          limit,
+        }),
+      );
+
+      if (meta.page === '1') {
+        promises.push(
+          Client.count({
+            where: {
+              manager_id: managerId,
+            },
+          }),
+        );
+      }
+
+      const [clients, totalItems] = await Promise.all(promises);
+
+      return {
+        clients,
+        totalItems,
+      };
     } catch (err) {
+      // console.log(err);
       throw new Error(err);
     }
   }
